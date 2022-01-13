@@ -7,12 +7,9 @@ import re
 
 middle_letter = input("Obligatorisk bokstav: ")
 
-start_and_end_regex = middle_letter
+all_letters = middle_letter+input("Andre bokstaver i ordstjerna: ").strip()
 
-for letter in input("Andre bokstaver i ordstjerna: ").strip():
-    start_and_end_regex += letter
-
-regex = re.compile("^["+start_and_end_regex+"]*"+middle_letter+"["+start_and_end_regex+"]*$")
+regex = re.compile("^["+all_letters+"]*"+middle_letter+"["+all_letters+"]*$")
 
 f = open('ordliste.txt',"rt") 
 
@@ -25,7 +22,6 @@ while f:
     if regex.match(norwegian_word) and len(norwegian_word)>3:
         solution.add(norwegian_word)
 
-for i in sorted(list(solution), reverse=True, key=len): # De beste ordene skrives ut først.
-    print(i, end=", ")
-    
+print(*(sorted(list(solution), reverse=True, key=len)), sep=", ")
+
 f.close()
