@@ -15,13 +15,13 @@ import re
 fullformsliste = open('fullformsliste.txt',"rt") 
 fullformsliste.readline()
 ordlistefil = open("ordliste.txt", "a")
-regex = re.compile("^[a-zæøå]*$")
+regex = re.compile("^[a-zæøå]{4,}$")
 
 while fullformsliste:
     linje = str(fullformsliste.readline())
     if linje == '':
         break
     norsk_ord = linje.split()[2]
-    if regex.match(norsk_ord) and len(norsk_ord)>3:
+    if regex.match(norsk_ord):
         ordlistefil.write(linje.split()[2]+" ")
 
