@@ -1,27 +1,25 @@
 # -*- coding: UTF-8 -*-
 """
-Henter ordliste fra fullformslisten i norsk ordbank fra Språkbanken:
+Henter ordliste generert fra fullformslisten i norsk ordbank fra Språkbanken:
 https://www.nb.no/sprakbanken/ressurskatalog/oai-nb-no-sbr-5/
+
+Ordlista består av alle gyldige ord med minst fire bokstaver.
 """
+
 import re
 
-middle_letter = input("Obligatorisk bokstav: ")
+midtbokstav = input("Obligatorisk bokstav: ").strip()
 
-all_letters = middle_letter+input("Andre bokstaver i ordstjerna: ").strip()
+alle_bokstaver = midtbokstav+input("Andre bokstaver i ordstjerna: ").strip()
 
-regex = re.compile("^["+all_letters+"]*"+middle_letter+"["+all_letters+"]*$")
+regex = re.compile("\\b["+alle_bokstaver+"]*"+midtbokstav+"["+alle_bokstaver+"]*\\b")
 
-f = open('ordliste.txt',"rt") 
 
-solution = set()
+with open('ordliste.txt',"r") as fil:
+    ordliste = fil.readline()
 
-while f:
-    norwegian_word = str(f.readline()).strip("\n")
-    if norwegian_word == '':
-        break
-    if regex.match(norwegian_word) and len(norwegian_word)>3:
-        solution.add(norwegian_word)
+losning = set(regex.findall(ordliste))
 
-print(*(sorted(list(solution), reverse=True, key=len)), sep=", ")
+print("Fant", len(losning), "gyldige ord:")
 
-f.close()
+print(*(sorted(list(losning), reverse=True, key=len)), sep=", ")
